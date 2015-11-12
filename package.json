@@ -1,0 +1,19 @@
+{
+  "name": "flikart_extension",
+  "version": "1.0.0",
+  "description": "This is flipkart price alerting extension's backend worker",
+  "main": "index.js",
+  "scripts": {
+    "test": "run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/puneet24/flipkart_extension.git"
+  },
+  "author": "puneet",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/puneet24/flipkart_extension/issues"
+  },
+  "homepage": "https://github.com/puneet24/flipkart_extension"
+}
