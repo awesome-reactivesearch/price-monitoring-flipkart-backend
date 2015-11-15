@@ -10,4 +10,4 @@ This is Backend module(Server side).
 4) Run `npm install`.    
 5) Start the server bu running `node index.js`. If everything works fine server will start. :)     
 
-Link of Front-end part is :-       
+Link of Front-end part is :- https://github.com/puneet24/flipkart_extension_frontend 
