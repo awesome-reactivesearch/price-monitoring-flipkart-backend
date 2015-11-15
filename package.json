@@ -15,5 +15,11 @@
   "bugs": {
     "url": "https://github.com/puneet24/flipkart_extension/issues"
   },
-  "homepage": "https://github.com/puneet24/flipkart_extension"
+  "homepage": "https://github.com/puneet24/flipkart_extension",
+  "dependencies": {
+    "appbase-js": "^0.9.0",
+    "express": "^4.13.3",
+    "fs": "0.0.2",
+    "request": "^2.65.0"
+  }
 }
