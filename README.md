@@ -5,7 +5,7 @@ This is Backend module(Server side).
 
 ## How to execute?  
 1) Make sure that nodejs is installed.  
-2) Clone the repository. `git clone `.   
+2) Clone the repository. `git clone https://github.com/puneet24/flipkart_extension_backend.git`.   
 3) Move to the repository cd `flipkart_extension`.     
 4) Run `npm install`.    
 5) Start the server bu running `node index.js`. If everything works fine server will start. :)     
