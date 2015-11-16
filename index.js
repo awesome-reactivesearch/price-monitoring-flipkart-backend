@@ -102,21 +102,30 @@ app.get('/alerting', function (req, res) {
   /* Starting polling for the requested product */
   console.log("alerting called");
   console.log(req.param('product_id'));
+  console.log("lte :- "+req.param('lte'));
+  console.log("gte :- "+req.param('gte'));
   start_polling(req.param('product_id'));
   /* Starting stream search for the user condition */
   var app_base = new Appbase(appbase_credentials);
   app_base.searchStream({
       type: 'flipkart_app',
       body: {
-        "query": { 
-          "bool": { 
-            "must": [
-              { "match": { "product_id": req.param('product_id')  }}, 
-              { "match": { "price": req.param('lte') }}  
-            ]
+          "query": {
+            "filtered": {
+              "query": {
+                "match" : { "product_id" : req.param('product_id') }
+              },
+              "filter": {
+                  "range" : {
+                      "price" : {
+                          "lte" : req.param('lte'),
+                          "gte" : req.param('gte')
+                      }
+                  }
+              }
+            }
           }
         }
-      }
   }).on('data', function(response) {
       console.log("new document update: ", response);
       html = "<p>You have set the price alert for flipkart product <b>"+req.param('product_id')+"</b>. Your condition has been matched and Price has reached to "+req.param('lte')+"</p>";
