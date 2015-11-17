@@ -22,6 +22,7 @@ var appbase = new Appbase(appbase_credentials);
 /* This is to access any file withn folder, no routing required for these files. */
 app.use('/', express.static(__dirname + '/'));
 
+/* This route is for returning product details of particular product. */
 app.get('/get_product_details', function (req, res) {
   console.log('request arrived');
   console.log(req.param('product_id'));

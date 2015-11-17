@@ -7,7 +7,7 @@ var helper = require("./helper.js");
 /*
   Hash Map of products for maintaining list of product_ids for which polling has started.
 */
-var a=[];
+var polled_products=[];
 
 /*
   Including appbase credentials stored in json file.
@@ -52,9 +52,9 @@ function starter(){
   }).on('data', function(response) {
     var arr = response.hits.hits;
     for(obj in arr){
-      if(a[arr[obj]._id] == undefined){
+      if(polled_products[arr[obj]._id] == undefined){
         console.log("Starting polling for "+arr[obj]._id);
-        a[arr[obj]._id] = true
+        polled_products[arr[obj]._id] = true
         start_polling(arr[obj]._id);
       }
     }
@@ -73,9 +73,9 @@ function starter(){
       }
     }
   }).on('data', function(res) {
-    if(res._id == undefined){
+    if(polled_products[res._id] == undefined){
       console.log("polling of new object arrived "+res._id);
-      arr[res._id] = true;
+      polled_products[res._id] = true;
       start_polling(res._id);
     }
   }).on('error', function(err) {
