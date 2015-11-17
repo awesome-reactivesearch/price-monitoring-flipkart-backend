@@ -74,7 +74,7 @@ app.get('/alerting', function (req, res) {
       }
   }).on('data', function(response) {
       console.log("new document update: ", response);
-      html = "<p>You have set the price alert for flipkart product <b>"+req.param('product_id')+"</b>. Your condition has been matched and Price has reached to "+req.param('lte')+"</p>";
+      html = "<p>You have set the price alert for flipkart product <b>"+req.param('product_id')+"</b>. Your condition has been matched and Price has reached to <b>"+response._source.price+"</b></p>";
       var options = {
       'method': 'POST',
       'uri': 'https:\\\\api.sendgrid.com\\api\\mail.send.json',
