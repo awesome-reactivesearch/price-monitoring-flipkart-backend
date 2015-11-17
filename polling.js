@@ -39,7 +39,7 @@ function start_polling(product_id)
   Main function responsible for listing of products for whch polling is to be started.
 */
 function starter(){
-  a[" _streamsearch"] = true;
+  polled_products[" _streamsearch"] = true;
   var app_base = new Appbase(appbase_credentials);
   console.log('.....polling of Products.....');
   app_base.search({
