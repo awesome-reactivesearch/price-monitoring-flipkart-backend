@@ -30,7 +30,7 @@ function start_polling(product_id)
     setTimeout(function() {
       helper.product_indexing(product_id);
       poll();
-    }, 10000);
+    }, 120000);
   };
   poll(); 
 }
