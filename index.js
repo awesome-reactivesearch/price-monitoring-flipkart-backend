@@ -24,8 +24,6 @@ app.use('/', express.static(__dirname + '/'));
 
 /* This route is for returning product details of particular product. */
 app.get('/get_product_details', function (req, res) {
-  console.log('request arrived');
-  console.log(req.param('product_id'));
   helper.get_product_details(req.param('product_id'),function(data){
       var details = {
         'product_id' : req.param('product_id'),
@@ -33,7 +31,6 @@ app.get('/get_product_details', function (req, res) {
         'details' : data.productBaseInfo.productAttributes.productBrand,
         'imageurls' : data.productBaseInfo.productAttributes.imageUrls
       }
-      console.log(details);
       res.send(details);
   });
 });
@@ -44,7 +41,7 @@ app.get('/get_product_details', function (req, res) {
    database and another is start the search for the condition mentioned by the user 
    and send the mail as soon as the condition is matched. 
 */
-app.get('/alerting', function (req, res) {
+app.get('/set_alert', function (req, res) {
   /* Starting polling for the requested product */
   console.log("alerting called");
   console.log(req.param('product_id'));
