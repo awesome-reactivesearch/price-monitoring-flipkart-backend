@@ -43,11 +43,6 @@ app.get('/get_product_details', function (req, res) {
 */
 app.get('/set_alert', function (req, res) {
   /* Starting polling for the requested product */
-  console.log("alerting called");
-  console.log(req.param('product_id'));
-  console.log("lte :- "+req.param('lte'));
-  console.log("gte :- "+req.param('gte'));
-  console.log("product indexing");
   helper.index_product(req.param('product_id'));
   /* Starting stream search for the user condition */
   appbase.searchStream({
