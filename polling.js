@@ -40,9 +40,9 @@ function start_polling(product_id)
 */
 function starter(){
   polled_products[" _streamsearch"] = true;
-  var app_base = new Appbase(appbase_credentials);
+  var appbaseRef = new Appbase(appbase_credentials);
   console.log('.....polling of Products.....');
-  app_base.search({
+  appbaseRef.search({
     type: 'flipkart_app',
     body: {
       query: {
@@ -65,7 +65,7 @@ function starter(){
   /*
     This function is to start polling, If any new product item is added into appbase database.
   */
-  app_base.searchStream({
+  appbaseRef.searchStream({
     type: "flipkart_app",
     body: {
       query: {
