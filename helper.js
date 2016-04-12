@@ -28,11 +28,14 @@ module.exports.get_product_details = function(product_id,callback){
 module.exports.index_product = function(product_id){
   this.get_product_details(product_id,function(data){
     var price = data.productBaseInfo.productAttributes.sellingPrice.amount;
-    var app_base = new Appbase(require('./appbase_credentials.json'));
-    app_base.index({
+    var appbaseRef = new Appbase(require('./appbase_credentials.json'));
+    appbaseRef.index({
       type: 'flipkart_app',
       id: product_id,
-      body: { 'price': price, 'product_id': product_id }
+      body: {
+        'price': price,
+        'product_id': product_id
+      }
     }).on('data', function(response) {
       //console.log(response);
     }).on('error', function(error) {
