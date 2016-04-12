@@ -25,7 +25,7 @@ module.exports.get_product_details = function(product_id,callback){
 /*
   Function for indexing the product detail into appbase databse.
 */
-module.exports.product_indexing = function(product_id){
+module.exports.index_product = function(product_id){
   this.get_product_details(product_id,function(data){
     var price = data.productBaseInfo.productAttributes.sellingPrice.amount;
     var app_base = new Appbase(require('./appbase_credentials.json'));

@@ -51,7 +51,7 @@ app.get('/alerting', function (req, res) {
   console.log("lte :- "+req.param('lte'));
   console.log("gte :- "+req.param('gte'));
   console.log("product indexing");
-  helper.product_indexing(req.param('product_id'));
+  helper.index_product(req.param('product_id'));
   /* Starting stream search for the user condition */
   appbase.searchStream({
       type: 'flipkart_app',
