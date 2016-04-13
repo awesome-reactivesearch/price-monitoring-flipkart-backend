@@ -41,7 +41,7 @@ app.get('/get_product_details', function (req, res) {
    database and another is start the search for the condition mentioned by the user 
    and send the mail as soon as the condition is matched. 
 */
-app.get('/set_alert', function (req, res) {
+app.post('/set_alert', function (req, res) {
   /* Starting polling for the requested product */
   helper.index_product(req.param('product_id'));
   /* Starting stream search for the user condition */
