@@ -24,8 +24,6 @@ app.use('/', express.static(__dirname + '/'));
 
 /* This route is for returning product details of particular product. */
 app.get('/get_product_details', function (req, res) {
-  console.log('request arrived');
-  console.log(req.param('product_id'));
   helper.get_product_details(req.param('product_id'),function(data){
       var details = {
         'product_id' : req.param('product_id'),
@@ -33,7 +31,6 @@ app.get('/get_product_details', function (req, res) {
         'details' : data.productBaseInfo.productAttributes.productBrand,
         'imageurls' : data.productBaseInfo.productAttributes.imageUrls
       }
-      console.log(details);
       res.send(details);
   });
 });
@@ -44,16 +41,12 @@ app.get('/get_product_details', function (req, res) {
    database and another is start the search for the condition mentioned by the user 
    and send the mail as soon as the condition is matched. 
 */
-app.get('/alerting', function (req, res) {
+app.post('/set_alert', function (req, res) {
   /* Starting polling for the requested product */
-  console.log("alerting called");
-  console.log(req.param('product_id'));
-  console.log("lte :- "+req.param('lte'));
-  console.log("gte :- "+req.param('gte'));
-  console.log("product indexing");
-  helper.product_indexing(req.param('product_id'));
+  helper.index_product(req.param('product_id'));
+  mail_html_content = "<p>You have set the price alert for flipkart product <b>"+req.param('product_id')+"</b>. Your condition has been matched and Price has reached to <b>{{{price}}}</b></p>";
   /* Starting stream search for the user condition */
-  appbase.searchStream({
+  appbase.searchStreamToURL({
       type: 'flipkart_app',
       body: {
         "query": {
@@ -72,20 +65,16 @@ app.get('/alerting', function (req, res) {
           }
         }
       }
+  }, {
+    'method': 'POST',
+    'url': 'https://api.sendgrid.com/api/mail.send.json',
+    'headers': {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    "count":1,
+    'body': 'to='+req.param('email')+'&amp;toname=Yash&amp;subject=Flipkart Price Alert&amp;html='+mail_html_content+'&amp;text=Price reached to '+req.param('lte')+'&amp;from=Appbase.io&amp;api_user=yashshah&amp;api_key=appbase12'
   }).on('data', function(response) {
-      console.log("new document update: ", response);
-      html = "<p>You have set the price alert for flipkart product <b>"+req.param('product_id')+"</b>. Your condition has been matched and Price has reached to <b>"+response._source.price+"</b></p>";
-      var options = {
-      'method': 'POST',
-      'uri': 'https:\\\\api.sendgrid.com\\api\\mail.send.json',
-      'headers': {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      'body': 'to='+req.param('email')+'&amp;toname=Yash&amp;subject=Flipkart Price Alert&amp;html='+html+'&amp;text=Price reached to '+req.param('lte')+'&amp;from=Appbase.io&amp;api_user=yashshah&amp;api_key=appbase12'
-      };
-      request(options, function (error, response, body) {if(error){console.log(error);}});
-      console.log('mail sent to :- '+req.param('email'));
-      this.stop();
+      console.log("Webhook has been configured : ", response);
   }).on('error', function(error) {
       console.log("getStream() failed with: ", error)
   })
