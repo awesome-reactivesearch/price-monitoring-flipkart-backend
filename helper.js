@@ -25,21 +25,38 @@ module.exports.get_product_details = function(product_id,callback){
 /*
   Function for indexing the product detail into appbase databse.
 */
-module.exports.index_product = function(product_id){
+module.exports.index_product = function(product_id, isUpdated){
   this.get_product_details(product_id,function(data){
     var price = data.productBaseInfo.productAttributes.sellingPrice.amount;
     var appbaseRef = new Appbase(require('./appbase_credentials.json'));
-    appbaseRef.index({
-      type: 'flipkart_app',
-      id: product_id,
-      body: {
-        'price': price,
-        'product_id': product_id
-      }
-    }).on('data', function(response) {
-      //console.log(response);
-    }).on('error', function(error) {
-      console.log(error);
-    });
+    if(isUpdated){
+      appbaseRef.update({
+        type: 'flipkart_app',
+        id: product_id,
+        body: {
+          doc: {
+            'price': price,
+            'product_id': product_id
+          }
+        }
+      }).on('data', function(response) {
+        console.log(response);
+      }).on('error', function(error) {
+        console.log(error);
+      });
+    } else {
+      appbaseRef.index({
+        type: 'flipkart_app',
+        id: product_id,
+        body: {
+          'price': price,
+          'product_id': product_id
+        }
+      }).on('data', function(response) {
+        console.log(response);
+      }).on('error', function(error) {
+        console.log(error);
+      });
+    }
   });
 }
