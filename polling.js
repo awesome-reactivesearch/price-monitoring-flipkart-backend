@@ -5,11 +5,6 @@ var Appbase = require('appbase-js');
 var helper = require("./helper.js");
 
 /*
-  Hash Map of products for maintaining list of product_ids for which polling has started.
-*/
-var polled_products=[];
-
-/*
   Including appbase credentials stored in json file.
 */
 var appbase_credentials = require('./appbase_credentials.json');
@@ -39,7 +34,6 @@ function start_polling(product_id)
   Main function responsible for listing of products for whch polling is to be started.
 */
 function starter(){
-  polled_products[" _streamsearch"] = true;
   console.log('.....polling of Products.....');
   appbaseRef.search({
     type: 'flipkart_app',
@@ -51,11 +45,8 @@ function starter(){
   }).on('data', function(response) {
     var arr = response.hits.hits;
     for(obj in arr){
-      if(polled_products[arr[obj]._id] == undefined){
         console.log("Starting polling for "+arr[obj]._id);
-        polled_products[arr[obj]._id] = true
         start_polling(arr[obj]._id);
-      }
     }
   }).on('error', function(error) {
       console.log("getStream() failed with: ", error)
@@ -72,11 +63,8 @@ function starter(){
       }
     }
   }).on('data', function(res) {
-    if(polled_products[res._id] == undefined){
       console.log("polling of new object arrived "+res._id);
-      polled_products[res._id] = true;
       start_polling(res._id);
-    }
   }).on('error', function(err) {
     console.log("streaming error: ", err);
   });
