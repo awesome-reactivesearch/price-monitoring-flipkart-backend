@@ -23,7 +23,7 @@ function start_polling(product_id)
 {
   function poll() {
     setTimeout(function() {
-      helper.index_product(product_id);
+      helper.index_product(product_id, true);
       poll();
     }, 120000);
   };
