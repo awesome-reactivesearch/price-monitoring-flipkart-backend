@@ -18,7 +18,7 @@ var appbase_credentials = require('./appbase_credentials.json');
   Appbase Credentials. Just make new account at appbase and configure it according to your account.
   Creating object of appbase, passing appbase_credentials.
 */
-var appbase = new Appbase(appbase_credentials);
+var appbaseRef = new Appbase(appbase_credentials);
 
 /*
   This function is for starting polling of received produt_id and storing it into the appbase databse.
@@ -40,7 +40,6 @@ function start_polling(product_id)
 */
 function starter(){
   polled_products[" _streamsearch"] = true;
-  var appbaseRef = new Appbase(appbase_credentials);
   console.log('.....polling of Products.....');
   appbaseRef.search({
     type: 'flipkart_app',
