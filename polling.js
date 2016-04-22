@@ -35,38 +35,31 @@ function start_polling(product_id)
 */
 function starter(){
   console.log('.....polling of Products.....');
-  appbaseRef.search({
+  var requestObject = {
     type: 'flipkart_app',
     body: {
       query: {
         match_all: {}
       }
     }
-  }).on('data', function(response) {
+  };
+  appbaseRef.search(requestObject).on('data', function(response) {
     var arr = response.hits.hits;
     for(obj in arr){
         console.log("Starting polling for "+arr[obj]._id);
         start_polling(arr[obj]._id);
     }
+    /*
+      This function is to start polling, If any new product item is added into appbase database.
+    */
+    appbaseRef.searchStream(requestObject).on('data', function(stream) {
+        console.log("polling of new object arrived "+stream._id);
+        start_polling(stream._id);
+    }).on('error', function(err) {
+      console.log("streaming error: ", err);
+    });
   }).on('error', function(error) {
       console.log("getStream() failed with: ", error)
-  });
-
-  /*
-    This function is to start polling, If any new product item is added into appbase database.
-  */
-  appbaseRef.searchStream({
-    type: "flipkart_app",
-    body: {
-      query: {
-        match_all: {}
-      }
-    }
-  }).on('data', function(res) {
-      console.log("polling of new object arrived "+res._id);
-      start_polling(res._id);
-  }).on('error', function(err) {
-    console.log("streaming error: ", err);
   });
 
 }
