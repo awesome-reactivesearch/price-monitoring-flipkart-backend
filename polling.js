@@ -33,7 +33,7 @@ function start_polling(product_id)
 /*
   Main function responsible for listing of products for whch polling is to be started.
 */
-function starter(){
+function initiate_polling(){
   console.log('.....polling of Products.....');
   var requestObject = {
     type: appbase_credentials.type,
@@ -67,4 +67,4 @@ function starter(){
 /*
   Call to the starter function.
 */
-starter();
+initiate_polling();
