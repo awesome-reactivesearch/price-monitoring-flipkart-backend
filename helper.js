@@ -1,4 +1,5 @@
 var Appbase = require('appbase-js');
+var appbase_credentials = require('./appbase_credentials.json')
 /*
     This is function which just gives details about products and call callback along with the details.
 */
@@ -28,10 +29,10 @@ module.exports.get_product_details = function(product_id,callback){
 module.exports.index_product = function(product_id, isUpdated){
   this.get_product_details(product_id,function(data){
     var price = data.productBaseInfo.productAttributes.sellingPrice.amount;
-    var appbaseRef = new Appbase(require('./appbase_credentials.json'));
+    var appbaseRef = new Appbase(appbase_credentials);
     if(isUpdated){
       appbaseRef.update({
-        type: 'flipkart_app',
+        type: appbase_credentials.type,
         id: product_id,
         body: {
           doc: {
@@ -46,7 +47,7 @@ module.exports.index_product = function(product_id, isUpdated){
       });
     } else {
       appbaseRef.index({
-        type: 'flipkart_app',
+        type: appbase_credentials.type,
         id: product_id,
         body: {
           'price': price,

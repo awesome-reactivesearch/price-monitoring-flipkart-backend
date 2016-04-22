@@ -36,7 +36,7 @@ function start_polling(product_id)
 function starter(){
   console.log('.....polling of Products.....');
   var requestObject = {
-    type: 'flipkart_app',
+    type: appbase_credentials.type,
     body: {
       query: {
         match_all: {}
