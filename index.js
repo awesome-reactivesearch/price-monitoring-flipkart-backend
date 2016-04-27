@@ -72,11 +72,11 @@ app.post('/set_alert', function (req, res) {
       'Content-Type': 'application/x-www-form-urlencoded'
     },
     "count":1,
-    'body': 'to='+req.param('email')+'&amp;toname=Yash&amp;subject=Flipkart Price Alert&amp;html='+mail_html_content+'&amp;text=Price reached to '+req.param('lte')+'&amp;from=Appbase.io&amp;api_user=yashshah&amp;api_key=appbase12'
+    'body': 'to='+req.param('email')+'&amp;toname=Yash&amp;subject=Flipkart Price Alert&amp;html='+mail_html_content+'&amp;text=Price reached to {{{price}}}&amp;from=Appbase.io&amp;api_user=yashshah&amp;api_key=appbase12'
   }).on('data', function(response) {
       console.log("Webhook has been configured : ", response);
   }).on('error', function(error) {
-      console.log("getStream() failed with: ", error)
+      console.log("searchStreamToURL() failed with: ", error)
   })
 });
 
