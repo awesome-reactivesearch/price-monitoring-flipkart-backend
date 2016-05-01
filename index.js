@@ -23,15 +23,15 @@ var appbase = new Appbase(appbase_credentials);
 app.use('/', express.static(__dirname + '/'));
 
 /* This route is for returning product details of particular product. */
-app.get('/get_product_details', function (req, res) {
-  helper.get_product_details(req.param('product_id'),function(data){
-      var details = {
-        'product_id' : req.param('product_id'),
-        'price' : data.productBaseInfo.productAttributes.sellingPrice.amount,
-        'details' : data.productBaseInfo.productAttributes.productBrand,
-        'imageurls' : data.productBaseInfo.productAttributes.imageUrls
-      }
-      res.send(details);
+app.get('/get_product_details', function(req, res) {
+  helper.get_product_details(req.param('product_id'), function(data) {
+    var details = {
+      'product_id': req.param('product_id'),
+      'price': data.productBaseInfo.productAttributes.sellingPrice.amount,
+      'details': data.productBaseInfo.productAttributes.productBrand,
+      'imageurls': data.productBaseInfo.productAttributes.imageUrls
+    }
+    res.send(details);
   });
 });
 
@@ -41,47 +41,47 @@ app.get('/get_product_details', function (req, res) {
    database and another is start the search for the condition mentioned by the user 
    and send the mail as soon as the condition is matched. 
 */
-app.post('/set_alert', function (req, res) {
+app.post('/set_alert', function(req, res) {
   /* Starting polling for the requested product */
   helper.index_product(req.param('product_id'));
-  mail_html_content = "<p>You have set the price alert for flipkart product <b>"+req.param('product_id')+"</b>. Your condition has been matched and Price has reached to <b>{{{price}}}</b></p>";
+  mail_html_content = "<p>You have set the price alert for flipkart product <b>" + req.param('product_id') + "</b>. Your condition has been matched and Price has reached to <b>{{{price}}}</b></p>";
   /* Starting stream search for the user condition */
   appbase.searchStreamToURL({
-      type: 'flipkart_app',
-      body: {
-        "query": {
-          "filtered": {
-            "query": {
-              "match" : { "product_id" : req.param('product_id') }
-            },
-            "filter": {
-              "range" : {
-                "price" : {
-                    "lte" : req.param('lte'),
-                    "gte" : req.param('gte')
-                }
+    type: 'flipkart_app',
+    body: {
+      "query": {
+        "filtered": {
+          "query": {
+            "match": { "product_id": req.param('product_id') }
+          },
+          "filter": {
+            "range": {
+              "price": {
+                "lte": req.param('lte'),
+                "gte": req.param('gte')
               }
             }
           }
         }
       }
+    }
   }, {
     'method': 'POST',
     'url': 'https://api.sendgrid.com/api/mail.send.json',
     'headers': {
       'Content-Type': 'application/x-www-form-urlencoded'
     },
-    "count":1,
-    'body': 'to='+req.param('email')+'&amp;toname=Yash&amp;subject=Flipkart Price Alert&amp;html='+mail_html_content+'&amp;text=Price reached to {{{price}}}&amp;from=Appbase.io&amp;api_user=yashshah&amp;api_key=appbase12'
+    "count": 1,
+    'body': 'to=' + req.param('email') + '&amp;toname=Yash&amp;subject=Flipkart Price Alert&amp;html=' + mail_html_content + '&amp;text=Price reached to {{{price}}}&amp;from=Appbase.io&amp;api_user=yashshah&amp;api_key=appbase12'
   }).on('data', function(response) {
-      console.log("Webhook has been configured : ", response);
+    console.log("Webhook has been configured : ", response);
   }).on('error', function(error) {
-      console.log("searchStreamToURL() failed with: ", error)
+    console.log("searchStreamToURL() failed with: ", error)
   })
 });
 
 /* It will start the server. */
-var server = app.listen(process.env.PORT || 3000,'0.0.0.0', function () {
+var server = app.listen(process.env.PORT || 3000, '0.0.0.0', function() {
   var host = server.address().address;
   var port = server.address().port;
   console.log('Flipkart extension back-end app listening at http://%s:%s', host, port);
