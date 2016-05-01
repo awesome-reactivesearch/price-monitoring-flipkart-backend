@@ -55,11 +55,11 @@ function initiate_polling(){
     appbaseRef.searchStream(requestObject).on('data', function(stream) {
         console.log("polling of new object arrived "+stream._id);
         start_polling(stream._id);
-    }).on('error', function(err) {
-      console.log("streaming error: ", err);
+    }).on('error', function(error) {
+      console.log("searchStream() failed with: ", error);
     });
   }).on('error', function(error) {
-      console.log("getStream() failed with: ", error)
+      console.log("search() failed with: ", error)
   });
 
 }
