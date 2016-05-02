@@ -41,7 +41,7 @@ app.get('/get_product_details', function(req, res) {
    database and another is start the search for the condition mentioned by the user 
    and send the mail as soon as the condition is matched. 
 */
-app.post('/set_alert', function(req, res) {
+app.get('/alert', function(req, res) {
   /* Starting polling for the requested product */
   helper.index_product(req.param('product_id'));
   mail_html_content = "<p>You have set the price alert for flipkart product <b>" + req.param('product_id') + "</b>. Your condition has been matched and Price has reached to <b>{{{price}}}</b></p>";
