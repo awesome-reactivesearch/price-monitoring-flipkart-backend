@@ -1,7 +1,6 @@
-# flipkart_extension
-Flipkart extension :- One can set price change alerts on flipkart products using this extension. (Back-end)
+# Price monitoring Backend
+This is the backend module of the price monitoring app. In this project, we are polling flipkart for price updates and using Appbase webhooks, we are notifying the users when the condition specified by them is satisfied.
 
-This is Backend module(Server side). 
 
 ## How to execute?  
 1) Make sure that nodejs is installed.  
