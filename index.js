@@ -44,6 +44,7 @@ app.get('/product', function(req, res) {
 app.get('/alert', function(req, res) {
   /* Starting polling for the requested product */
   mail_html_content = "<p>You have set the price alert for flipkart product <b>" + req.param('product_id') + "</b>. Your condition has been matched and Price has reached to <b>{{{price}}}</b></p>";
+  var sendgrid_api_key = "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"
   /* Starting stream search for the user condition */
   appbase.searchStreamToURL({
     type: appbase_credentials.type,
@@ -68,7 +69,8 @@ app.get('/alert', function(req, res) {
     'method': 'POST',
     'url': 'https://api.sendgrid.com/api/mail.send.json',
     'headers': {
-      'Content-Type': 'application/x-www-form-urlencoded'
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Authorization': 'Bearer ' + sendgrid_api_key
     },
     "count": 1,
     'string_body': 'to=' + req.param('email') + '&amp;toname=Yash&amp;subject=Flipkart Price Alert&amp;html=' + mail_html_content + '&amp;text=Price reached to {{{price}}}&amp;from=Appbase.io&amp;api_user=yashshah&amp;api_key=appbase12'
