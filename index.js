@@ -46,7 +46,7 @@ app.get('/alert', function(req, res) {
   mail_html_content = "<p>You have set the price alert for flipkart product <b>" + req.param('product_id') + "</b>. Your condition has been matched and Price has reached to <b>{{{price}}}</b></p>";
   /* Starting stream search for the user condition */
   appbase.searchStreamToURL({
-    type: 'flipkart_app',
+    type: appbase_credentials.type,
     body: {
       "query": {
         "filtered": {
