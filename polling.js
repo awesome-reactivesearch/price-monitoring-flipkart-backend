@@ -17,14 +17,14 @@ var appbaseRef = new Appbase(appbase_credentials);
 
 /*
   This function is for starting polling of received produt_id and storing it into the appbase databse.
-  The time interval of polling is set to 10 seconds.
+  The time interval of polling is set to 1000 seconds.
 */
 function start_polling(product_id) {
   function poll() {
     setTimeout(function() {
       helper.index_product(product_id, true);
       poll();
-    }, 120000);
+    }, 1000000);
   };
   poll();
 }
