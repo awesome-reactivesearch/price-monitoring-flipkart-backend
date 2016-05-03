@@ -29,6 +29,7 @@ module.exports.get_product_details = function(product_id,callback){
 module.exports.index_product = function(product_id, isUpdated){
   this.get_product_details(product_id,function(data){
     var price = data.productBaseInfo.productAttributes.sellingPrice.amount;
+    var name = data.productBaseInfo.productAttributes.productBrand
     var appbaseRef = new Appbase(appbase_credentials);
     if(isUpdated){
       appbaseRef.update({
@@ -51,7 +52,8 @@ module.exports.index_product = function(product_id, isUpdated){
         id: product_id,
         body: {
           'price': price,
-          'product_id': product_id
+          'product_id': product_id,
+          'name': name
         }
       }).on('data', function(response) {
         console.log(response);
