@@ -23,7 +23,7 @@ var appbase = new Appbase(appbase_credentials);
 app.use('/', express.static(__dirname + '/'));
 
 /* This route is for returning product details of particular product. */
-app.get('/get_product_details', function(req, res) {
+app.get('/product', function(req, res) {
   helper.get_product_details(req.param('product_id'), function(data) {
     var details = {
       'product_id': req.param('product_id'),
