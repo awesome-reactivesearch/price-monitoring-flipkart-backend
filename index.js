@@ -28,7 +28,7 @@ app.get('/product', function(req, res) {
     var details = {
       'product_id': req.param('product_id'),
       'price': data.productBaseInfo.productAttributes.sellingPrice.amount,
-      'details': data.productBaseInfo.productAttributes.productBrand,
+      'name': data.productBaseInfo.productAttributes.productBrand,
       'imageurls': data.productBaseInfo.productAttributes.imageUrls
     }
     res.send(details);
