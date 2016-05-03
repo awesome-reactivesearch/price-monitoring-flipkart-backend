@@ -43,8 +43,8 @@ app.get('/product', function(req, res) {
 */
 app.get('/alert', function(req, res) {
   /* Starting polling for the requested product */
-  mail_html_content = "<p>You have set the price alert for flipkart product <b>" + req.param('product_id') + "</b>. Your condition has been matched and Price has reached to <b>{{{price}}}</b></p>";
   var sendgrid_api_key = "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"
+  var mail_body = "You have set the price alert for flipkart product {{{name}}}. Your condition has been matched and Price has reached to {{{price}}}";
   /* Starting stream search for the user condition */
   appbase.searchStreamToURL({
     type: appbase_credentials.type,
@@ -73,7 +73,7 @@ app.get('/alert', function(req, res) {
       'Authorization': 'Bearer ' + sendgrid_api_key
     },
     "count": 1,
-    'string_body': 'to=' + req.param('email') + '&amp;toname=Yash&amp;subject=Flipkart Price Alert&amp;html=' + mail_html_content + '&amp;text=Price reached to {{{price}}}&amp;from=Appbase.io&amp;api_user=yashshah&amp;api_key=appbase12'
+    'string_body': 'to=' + req.param('email') + '&amp;subject=Your Flipkart product price Alert&amp;text=' + mail_body + '&amp;from=yash@appbase.io'
   }).on('data', function(response) {
     console.log("Webhook has been configured : ", response);
   }).on('error', function(error) {
