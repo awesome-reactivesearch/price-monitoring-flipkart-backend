@@ -12,6 +12,8 @@ var helper = require("./helper.js");
   Including appbase credentials stored in json file.
 */
 var appbase_credentials = require('./appbase_credentials.json');
+var sendgrid_api_key = "ENTER_YOUR_SENDGRID_API_KEY_HERE"
+
 
 /*
   Appbase Credentials. Just make new account at appbase and configure it according to your account.
@@ -43,7 +45,6 @@ app.get('/product', function(req, res) {
 */
 app.get('/alert', function(req, res) {
   /* Starting polling for the requested product */
-  var sendgrid_api_key = "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"
   var mail_body = "You have set the price alert for flipkart product {{{name}}}. Your condition has been matched and Price has reached to {{{price}}}";
   /* Starting stream search for the user condition */
   appbase.searchStreamToURL({
