@@ -11,24 +11,24 @@ var helper = require("./helper.js");
 /*
   Including appbase credentials stored in json file.
 */
-var appbase_credentials = require('./appbase_credentials.json');
+var appbaseCredentials = require('./appbase_credentials.json');
 var sendgrid_api_key = "ENTER_YOUR_SENDGRID_API_KEY_HERE"
 
 
 /*
   Appbase Credentials. Just make new account at appbase and configure it according to your account.
-  Creating object of appbase, passing appbase_credentials.
+  Creating object of appbase, passing appbaseCredentials.
 */
-var appbase = new Appbase(appbase_credentials);
+var appbase = new Appbase(appbaseCredentials);
 
 /* This is to access any file withn folder, no routing required for these files. */
 app.use('/', express.static(__dirname + '/'));
 
 /* This route is for returning product details of particular product. */
 app.get('/product', function(req, res) {
-  helper.get_product_details(req.param('product_id'), function(data) {
+  helper.getProductDetails(req.param('productId'), function(data) {
     var details = {
-      'product_id': req.param('product_id'),
+      'productId': req.param('productId'),
       'price': data.productBaseInfo.productAttributes.sellingPrice.amount,
       'name': data.productBaseInfo.productAttributes.productBrand,
       'imageurls': data.productBaseInfo.productAttributes.imageUrls
@@ -38,22 +38,22 @@ app.get('/product', function(req, res) {
 });
 
 /* Price alert routing. The Client side makes the ajax call to this route with 
-   params [product_id,email,price]. This route has 2 tasks, first one is to start 
+   params [productId,email,price]. This route has 2 tasks, first one is to start 
    polling of this product in order to save the updated price of product into appbase
    database and another is start the search for the condition mentioned by the user 
    and send the mail as soon as the condition is matched. 
 */
 app.get('/alert', function(req, res) {
   /* Starting polling for the requested product */
-  var mail_body = "You have set the price alert for flipkart product {{{name}}}. Your condition has been matched and Price has reached to {{{price}}}";
+  var mailBody = "You have set the price alert for flipkart product {{{name}}}. Your condition has been matched and Price has reached to {{{price}}}";
   /* Starting stream search for the user condition */
   appbase.searchStreamToURL({
-    type: appbase_credentials.type,
+    type: appbaseCredentials.type,
     body: {
       "query": {
         "filtered": {
           "query": {
-            "match": { "product_id": req.param('product_id') }
+            "match": { "productId": req.param('productId') }
           },
           "filter": {
             "range": {
@@ -74,13 +74,13 @@ app.get('/alert', function(req, res) {
       'Authorization': 'Bearer ' + sendgrid_api_key
     },
     "count": 1,
-    'string_body': 'to=' + req.param('email') + '&amp;subject=Your Flipkart product price Alert&amp;text=' + mail_body + '&amp;from=yash@appbase.io'
+    'string_body': 'to=' + req.param('email') + '&amp;subject=Your Flipkart product price Alert&amp;text=' + mailBody + '&amp;from=yash@appbase.io'
   }).on('data', function(response) {
     console.log("Webhook has been configured : ", response);
   }).on('error', function(error) {
     console.log("searchStreamToURL() failed with: ", error)
   })
-  helper.index_product(req.param('product_id'));
+  helper.indexProduct(req.param('productId'));
 });
 
 /* It will start the server. */

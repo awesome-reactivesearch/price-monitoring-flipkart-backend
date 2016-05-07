@@ -25,7 +25,7 @@ function startPolling() {
     setTimeout(function() {
       for (productId in productList) {
         console.log("Starting polling for the product with Id: " + productList[productId]);
-        helper.index_product(productId);
+        helper.indexProduct(productId);
       }
       poll();
     }, 1000000);
