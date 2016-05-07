@@ -1,5 +1,5 @@
 var Appbase = require('appbase-js');
-var appbase_credentials = require('./appbase_credentials.json')
+var appbaseCredentials = require('./appbase_credentials.json')
   /*
       This is function which just gives details about products and call callback along with the details.
   */
@@ -31,9 +31,9 @@ module.exports.indexProduct = function(productId) {
   this.getProductDetails(productId, function(data) {
     var price = data.productBaseInfo.productAttributes.sellingPrice.amount;
     var name = data.productBaseInfo.productAttributes.productBrand
-    var appbaseRef = new Appbase(appbase_credentials);
+    var appbaseRef = new Appbase(appbaseCredentials);
     appbaseRef.index({
-      type: appbase_credentials.type,
+      type: appbaseCredentials.type,
       id: productId,
       body: {
         'price': price,
