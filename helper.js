@@ -31,35 +31,18 @@ module.exports.index_product = function(product_id, isUpdated){
     var price = data.productBaseInfo.productAttributes.sellingPrice.amount;
     var name = data.productBaseInfo.productAttributes.productBrand
     var appbaseRef = new Appbase(appbase_credentials);
-    if(isUpdated){
-      appbaseRef.update({
-        type: appbase_credentials.type,
-        id: product_id,
-        body: {
-          doc: {
-            'price': price,
-            'product_id': product_id
-          }
-        }
-      }).on('data', function(response) {
-        console.log(response);
-      }).on('error', function(error) {
-        console.log(error);
-      });
-    } else {
-      appbaseRef.index({
-        type: appbase_credentials.type,
-        id: product_id,
-        body: {
-          'price': price,
-          'product_id': product_id,
-          'name': name
-        }
-      }).on('data', function(response) {
-        console.log(response);
-      }).on('error', function(error) {
-        console.log(error);
-      });
-    }
+    appbaseRef.index({
+      type: appbase_credentials.type,
+      id: productId,
+      body: {
+        'price': price,
+        'productId': productId,
+        'name': name
+      }
+    }).on('data', function(response) {
+      console.log(response);
+    }).on('error', function(error) {
+      console.log(error);
+    });
   });
 }
