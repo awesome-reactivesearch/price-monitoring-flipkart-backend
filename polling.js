@@ -20,7 +20,7 @@ var productList = []
     This function is for starting polling of all the productsand storing it into the appbase databse.
     The time interval of polling is set to 1000 seconds.
   */
-function start_polling() {
+function startPolling() {
   function poll() {
     setTimeout(function() {
       for (productId in productList) {
@@ -36,7 +36,7 @@ function start_polling() {
 /*
   Main function responsible for listing of products for whch polling is to be started.
 */
-function initiate_polling() {
+function fetchProducts() {
   var requestObject = {
     type: appbase_credentials.type,
     body: {
@@ -49,7 +49,7 @@ function initiate_polling() {
     productList = response.hits.hits.map(function(hit) {
       return hit._id;
     });
-    start_polling()
+    startPolling();
     appbaseRef.searchStream(requestObject).on('data', function(stream) {
       console.log("Starting polling for new product streamed: " + stream._id);
       productList.push(stream._id);
@@ -64,4 +64,4 @@ function initiate_polling() {
 /*
   Call to the starter function.
 */
-initiate_polling();
+fetchProducts();
