@@ -14,17 +14,20 @@ var appbase_credentials = require('./appbase_credentials.json');
   Creating object of appbase, passing appbase_credentials.
 */
 var appbaseRef = new Appbase(appbase_credentials);
-
+var productList = []
 /*
   This function is for starting polling of received produt_id and storing it into the appbase databse.
   The time interval of polling is set to 1000 seconds.
 */
-function start_polling(product_id) {
+function start_polling() {
   function poll() {
     setTimeout(function() {
-      helper.index_product(product_id, true);
+      for (productId in productList) {
+        console.log("Starting polling for " + productList[productId]);
+        helper.index_product(productId);
+      }
       poll();
-    }, 1000000);
+    }, 1000);
   };
   poll();
 }
@@ -43,24 +46,17 @@ function initiate_polling() {
     }
   };
   appbaseRef.search(requestObject).on('data', function(response) {
-    var arr = response.hits.hits;
-    for (obj in arr) {
-      console.log("Starting polling for " + arr[obj]._id);
-      start_polling(arr[obj]._id);
-    }
-    /*
-      This function is to start polling, If any new product item is added into appbase database.
-    */
+    productList = response.hits.hits.map(function(hit) {return hit._id; });
+    start_polling()
     appbaseRef.searchStream(requestObject).on('data', function(stream) {
       console.log("polling of new object arrived " + stream._id);
-      start_polling(stream._id);
+      productList.push(stream._id);
     }).on('error', function(error) {
       console.log("searchStream() failed with: ", error);
     });
   }).on('error', function(error) {
     console.log("search() failed with: ", error)
   });
-
 }
 
 /*
