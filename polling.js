@@ -24,7 +24,7 @@ function start_polling() {
   function poll() {
     setTimeout(function() {
       for (productId in productList) {
-        console.log("Starting polling for " + productList[productId]);
+        console.log("Starting polling for the product with Id: " + productList[productId]);
         helper.index_product(productId);
       }
       poll();
@@ -37,7 +37,6 @@ function start_polling() {
   Main function responsible for listing of products for whch polling is to be started.
 */
 function initiate_polling() {
-  console.log('.....polling of Products.....');
   var requestObject = {
     type: appbase_credentials.type,
     body: {
@@ -52,7 +51,7 @@ function initiate_polling() {
     });
     start_polling()
     appbaseRef.searchStream(requestObject).on('data', function(stream) {
-      console.log("polling of new object arrived " + stream._id);
+      console.log("Starting polling for new product streamed: " + stream._id);
       productList.push(stream._id);
     }).on('error', function(error) {
       console.log("searchStream() failed with: ", error);
