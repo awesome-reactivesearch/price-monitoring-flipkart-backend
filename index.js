@@ -46,8 +46,8 @@ app.get('/product', function(req, res) {
 app.get('/alert', function(req, res) {
   /* Starting polling for the requested product */
   var mailBody = "You have set the price alert for flipkart product {{{name}}}. Your condition has been matched and Price has reached to {{{price}}}";
-  /* Starting stream search for the user condition */
-  appbase.searchStreamToURL({
+
+  var requestObject = {
     type: appbaseCredentials.type,
     body: {
       "query": {
@@ -66,7 +66,9 @@ app.get('/alert', function(req, res) {
         }
       }
     }
-  }, {
+  }
+
+  var webhookObject = {
     'method': 'POST',
     'url': 'https://api.sendgrid.com/api/mail.send.json',
     'headers': {
@@ -75,7 +77,9 @@ app.get('/alert', function(req, res) {
     },
     "count": 1,
     'string_body': 'to=' + req.param('email') + '&amp;subject=Your Flipkart product price Alert&amp;text=' + mailBody + '&amp;from=yash@appbase.io'
-  }).on('data', function(response) {
+  }
+  /* Starting stream search for the user condition */
+  appbase.searchStreamToURL(requestObject, webhookObject).on('data', function(response) {
     console.log("Webhook has been configured : ", response);
   }).on('error', function(error) {
     console.log("searchStreamToURL() failed with: ", error)
