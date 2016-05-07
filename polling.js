@@ -14,11 +14,12 @@ var appbase_credentials = require('./appbase_credentials.json');
   Creating object of appbase, passing appbase_credentials.
 */
 var appbaseRef = new Appbase(appbase_credentials);
+
 var productList = []
-/*
-  This function is for starting polling of received produt_id and storing it into the appbase databse.
-  The time interval of polling is set to 1000 seconds.
-*/
+  /*
+    This function is for starting polling of all the productsand storing it into the appbase databse.
+    The time interval of polling is set to 1000 seconds.
+  */
 function start_polling() {
   function poll() {
     setTimeout(function() {
@@ -27,7 +28,7 @@ function start_polling() {
         helper.index_product(productId);
       }
       poll();
-    }, 1000);
+    }, 1000000);
   };
   poll();
 }
@@ -46,7 +47,9 @@ function initiate_polling() {
     }
   };
   appbaseRef.search(requestObject).on('data', function(response) {
-    productList = response.hits.hits.map(function(hit) {return hit._id; });
+    productList = response.hits.hits.map(function(hit) {
+      return hit._id;
+    });
     start_polling()
     appbaseRef.searchStream(requestObject).on('data', function(stream) {
       console.log("polling of new object arrived " + stream._id);
