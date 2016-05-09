@@ -6,7 +6,7 @@ var appbaseCredentials = require('./appbase_credentials.json')
 module.exports.getProductDetails = function(productId, callback) {
   var request = require('request');
   var options = {
-    uri: 'https://affiliate-api.flipkart.net/affiliate/product/json?id=' + productId,
+    uri: 'https://affiliate-api.flipkart.net/affiliate/1.0/product.json?id=' + productId,
     method: 'GET',
     headers: require('./flipkart_credentials.json')
   };

@@ -29,9 +29,9 @@ app.get('/product', function(req, res) {
   helper.getProductDetails(req.param('productId'), function(data) {
     var details = {
       'productId': req.param('productId'),
-      'price': data.productBaseInfo.productAttributes.sellingPrice.amount,
-      'name': data.productBaseInfo.productAttributes.productBrand,
-      'imageurls': data.productBaseInfo.productAttributes.imageUrls
+      'price': data.productBaseInfoV1.flipkartSpecialPrice.amount,
+      'name': data.productBaseInfoV1.title,
+      'imageurls': data.productBaseInfoV1.imageUrls
     }
     res.send(details);
   });
